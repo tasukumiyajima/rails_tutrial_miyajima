@@ -30,6 +30,9 @@ gem 'bootsnap',   '1.4.5', require: false
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rubocop-airbnb'
+  gem 'rspec-rails', '~> 3.8.0'
+  gem "factory_bot_rails", "~> 4.10.0"
 end
 
 group :development do
@@ -37,6 +40,7 @@ group :development do
   gem 'listen',                '3.1.5'
   gem 'spring',                '2.1.0'
   gem 'spring-watcher-listen', '2.0.1'
+  gem 'spring-commands-rspec'
 end
 
 group :test do
