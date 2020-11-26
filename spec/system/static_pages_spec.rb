@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "StaticPages", type: :system do
-
   def setup
     @base_title = "Ruby on Rails Tutorial Sample App"
   end
