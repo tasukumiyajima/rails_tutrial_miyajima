@@ -8,7 +8,7 @@ RSpec.describe "StaticPages", type: :system do
   describe "GET /home" do
     it "display correct title" do
       visit root_path
-      expect(page).to have_title "Home | #{@base_title}"
+      expect(page).to have_title "#{@base_title}"
     end
   end
 
