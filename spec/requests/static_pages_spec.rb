@@ -6,25 +6,30 @@ RSpec.describe "StaticPages", type: :request do
       get root_url
       expect(response).to have_http_status(200)
     end
+
+    it "displays correct body" do
+      get root_url
+      expect(response.body).to include "Welcome to the Sample App"
+    end
   end
 
   describe "GET /help" do
     it "returns https success" do
-      get static_pages_help_url
+      get help_path
       expect(response).to have_http_status(200)
     end
   end
 
   describe "GET /about" do
     it "returns https success" do
-      get static_pages_about_url
+      get about_path
       expect(response).to have_http_status(200)
     end
   end
 
   describe "GET /contact" do
     it "returns https success" do
-      get static_pages_contact_url
+      get contact_path
       expect(response).to have_http_status(200)
     end
   end
