@@ -30,6 +30,7 @@ gem 'bootsnap',   '1.4.5', require: false
 
 gem 'bcrypt',         '3.1.13'
 gem 'bootstrap-sass', '3.4.1'
+gem 'pry-rails'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

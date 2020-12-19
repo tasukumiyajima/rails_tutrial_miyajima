@@ -30,7 +30,8 @@ module Myapp
     # the framework and any gems in your application.
 
     # Don't generate system test files.
-    config.generators.system_tests = nil
+    config.generators.test_framework = :rspec
+    config.generators.system_tests   = false
 
     config.generators do |g|
       g.test_framework :rspec,
