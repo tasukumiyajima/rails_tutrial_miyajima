@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe "Users", type: :system do
   describe "create an new user" do
     context "with correct values" do
+      subject { page }
+
       before do
         visit signup_path
         fill_in 'Name', with: 'Example User'
@@ -11,7 +13,6 @@ RSpec.describe "Users", type: :system do
         fill_in 'Confirmation', with: 'password'
         click_button 'Create my account'
       end
-      subject { page }
 
       it "gets an flash message" do
         is_expected.to have_selector(".alert-success", text: "Welcome to the Sample App!")
@@ -23,6 +24,8 @@ RSpec.describe "Users", type: :system do
     end
 
     context "with incorrect values" do
+      subject { page }
+
       before do
         visit signup_path
         fill_in "Name", with: ""
@@ -31,7 +34,6 @@ RSpec.describe "Users", type: :system do
         fill_in "Confirmation", with: ""
         click_button "Create my account"
       end
-      subject { page }
 
       it "gets an error" do
         is_expected.to have_selector("#error_explanation")
