@@ -81,7 +81,7 @@ RSpec.describe User, type: :model do
   end
 
   context "with duplicated email addresses" do
-    let(:duplicate_user) { build(:user) }
+    let(:duplicate_user) { build(:user, email: user.email) }
 
     it "is not be valid" do
       user.save

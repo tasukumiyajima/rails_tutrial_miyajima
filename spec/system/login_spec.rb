@@ -1,6 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe "Sessions", type: :system do
+RSpec.describe "Login", type: :system do
+  subject { page }
+
   let!(:user) { create(:user) }
 
   before do
@@ -8,8 +10,6 @@ RSpec.describe "Sessions", type: :system do
   end
 
   context "with invalid email and password" do
-    subject { page }
-
     before do
       fill_in "Email", with: ""
       fill_in "Password", with: ""
@@ -25,10 +25,9 @@ RSpec.describe "Sessions", type: :system do
   end
 
   context "with valid email and invalid password" do
-    subject { page }
-
     before do
-      fill_in "Email", with: "user@example.com"
+      visit login_path
+      fill_in "Email", with: user.email
       fill_in "Password", with: ""
       click_button "Log in"
     end
@@ -40,11 +39,9 @@ RSpec.describe "Sessions", type: :system do
   end
 
   context "with valid email and password" do
-    subject { page }
-
     before do
-      fill_in "Email", with: "user@example.com"
-      fill_in "Password", with: "foobar"
+      fill_in "Email", with: user.email
+      fill_in "Password", with: user.password
       click_button "Log in"
     end
 
