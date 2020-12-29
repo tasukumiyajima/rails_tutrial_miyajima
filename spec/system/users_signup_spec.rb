@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Users_signup", type: :system do
+  def setup
+    ActionMailer::Base.deliveries.clear
+  end
+
   context "with correct values" do
     subject { page }
 
@@ -14,8 +18,11 @@ RSpec.describe "Users_signup", type: :system do
     end
 
     it "login as a new user" do
-      is_expected.to have_selector(".alert-success", text: "Welcome to the Sample App!")
-      is_expected.to have_current_path user_path(User.last)
+      is_expected.to have_selector(
+        ".alert-info",
+        text: "Please check your email to activate your account.",
+      )
+      is_expected.to have_current_path root_path
     end
   end
 

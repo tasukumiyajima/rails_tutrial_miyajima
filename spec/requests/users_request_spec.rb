@@ -4,6 +4,7 @@ RSpec.describe "Users_requests", type: :request do
   let(:user) { create(:user) }
   let!(:other_user) { create(:user, name: "Archer", email: "duchess@example.gov") }
   let!(:admin_user) { create(:user, :admin) }
+  let!(:non_acitve_user) { create(:user, :no_activated) }
 
   describe "GET /new" do
     it "returns http success" do
@@ -12,10 +13,16 @@ RSpec.describe "Users_requests", type: :request do
     end
   end
 
-  describe "GET /new" do
+  describe "GET /show" do
     it "returns http success" do
       get user_path(user)
       expect(response).to have_http_status 200
+    end
+
+    it "redirect to root_path when user is not activated" do
+      get user_path(non_acitve_user)
+      expect(response).to have_http_status 302
+      expect(response).to redirect_to root_path
     end
   end
 
@@ -59,17 +66,14 @@ RSpec.describe "Users_requests", type: :request do
         expect do
           post users_path, params: { user: attributes_for(:user) }
         end.to change(User, :count).by(1)
+        expect(ActionMailer::Base.deliveries.size).to eq 1
       end
 
       it "redirect to user_path" do
         post users_path, params: { user: attributes_for(:user) }
         expect(response).to have_http_status 302
-        expect(response).to redirect_to user_path(User.last)
-      end
-
-      it "log in" do
-        post users_path, params: { user: attributes_for(:user) }
-        expect(is_logged_in?).to be_truthy
+        expect(response).to redirect_to root_path
+        expect(is_logged_in?).to be_falsy
       end
     end
   end
