@@ -33,7 +33,7 @@ RSpec.describe "Users_requests", type: :request do
       expect(response).to redirect_to login_url
     end
 
-    it "returns http success" do
+    it "returns http success when logged in" do
       post login_path, params: { session: { email: user.email, password: user.password } }
       get users_path
       expect(response).to have_http_status 200
