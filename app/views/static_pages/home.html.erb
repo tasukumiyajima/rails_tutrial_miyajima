@@ -1,5 +1,5 @@
 <% if logged_in? %>
-  <%= render "static_pages/user_logged_in", micropost: @micropost, feed_items: @feed_items %>
+  <%= render "static_pages/user_logged_in",user: @user, micropost: @micropost, feed_items: @feed_items %>
 <% else %>
   <%= render "static_pages/user_not_logged_in" %>
 <% end %>

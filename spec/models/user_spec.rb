@@ -113,4 +113,33 @@ RSpec.describe User, type: :model do
       end. to change(Micropost, :count).by(-1)
     end
   end
+
+  describe "feed" do
+    let(:user) { create(:user, :with_microposts) }
+    let(:other_user) { create(:user, :with_microposts) }
+
+    context "when user follows other_user" do
+      before { user.active_relationships.create!(followed_id: other_user.id) }
+
+      it "contains other user's microposts within user's feed" do
+        other_user.microposts.each do |post_following|
+          expect(user.feed.include?(post_following)).to be_truthy
+        end
+      end
+
+      it "contains user's own microposts within user's feed" do
+        user.microposts.each do |post_self|
+          expect(user.feed.include?(post_self)).to be_truthy
+        end
+      end
+    end
+
+    context "when user deesn't follow other_user" do
+      it "doesn't contain other user's microposts within user's feed" do
+        other_user.microposts.each do |post_unfollowed|
+          expect(user.feed.include?(post_unfollowed)).to be_falsy
+        end
+      end
+    end
+  end
 end

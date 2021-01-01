@@ -181,4 +181,18 @@ RSpec.describe "Users_requests", type: :request do
       expect(response).to redirect_to users_url
     end
   end
+
+  describe "GET /following" do
+    it "redirect when not logged in" do
+      get following_user_path(user)
+      expect(response). to redirect_to login_url
+    end
+  end
+
+  describe "GET /followers" do
+    it "redirect when not logged in" do
+      get followers_user_path(user)
+      expect(response). to redirect_to login_url
+    end
+  end
 end

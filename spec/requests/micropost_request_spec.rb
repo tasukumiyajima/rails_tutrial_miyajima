@@ -38,7 +38,10 @@ RSpec.describe "Microposts", type: :request do
 
     context "when logged in as other_user" do
       before do
-        post login_path, params: { session: { email: other_user.email, password: other_user.password } }
+        post login_path, params: { session: {
+          email: other_user.email,
+          password: other_user.password,
+        } }
       end
 
       it "doesn't delete user's micropost" do

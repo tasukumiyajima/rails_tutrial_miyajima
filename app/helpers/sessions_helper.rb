@@ -13,13 +13,13 @@ module SessionsHelper
 
   # 記憶トークンcookieに対応するユーザーを返す
   def current_user
-    if (user_id = session[:user_id])
-      current_user ||= User.find_by(id: user_id)
-    elsif (user_id = cookies.signed[:user_id])
+    if (user_id = session[:user_id]) # rubocop:disable Lint/AssignmentInCondition
+      current_user ||= User.find_by(id: user_id) # rubocop:disable Lint/UselessAssignment
+    elsif (user_id = cookies.signed[:user_id]) # rubocop:disable Lint/AssignmentInCondition
       user = User.find_by(id: user_id)
       if user && user.authenticated?(:remember, cookies[:remember_token])
         log_in user
-        current_user = user
+        current_user = user # rubocop:disable Lint/UselessAssignment
       end
     end
   end
@@ -45,7 +45,7 @@ module SessionsHelper
   def log_out
     forget(current_user)
     session.delete(:user_id)
-    current_user = nil
+    current_user = nil # rubocop:disable Lint/UselessAssignment
   end
 
   # 記憶したURL（もしくはデフォルト値）にリダイレクト

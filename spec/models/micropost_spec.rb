@@ -23,14 +23,4 @@ RSpec.describe Micropost, type: :model do
       expect(micropost).to be_invalid
     end
   end
-
-  describe "default_scope" do
-    let!(:day_before_yesterday) { create(:micropost, :day_before_yesterday) }
-    let!(:yesterday) { create(:micropost, :yesterday) }
-    let!(:now) { create(:micropost, :now) }
-
-    it "makes latest micropost set first" do
-      expect(Micropost.first).to eq now
-    end
-  end
 end
