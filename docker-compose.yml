@@ -20,6 +20,10 @@ services:
       - db
     stdin_open: true
     tty: true
+    smtp:
+      image: mailhog/mailhog
+      ports:
+        - '8025:8025'
 volumes:
   mysql-data:
     driver: local
