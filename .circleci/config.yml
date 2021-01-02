@@ -8,17 +8,18 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: docker-compose build
-          command: docker-compose build
+          name: Setup environment variable
+          command: |
+            echo "export COMPOSE_FILE=docker-compose.ci.yml" >> $BASH_ENV
       - run:
-          name: docker-compose up
-          command: docker-compose up -d
+          name: Start containers and verify it is working
+          command: |
+            set -x
+            docker-compose up -d
       - run:
-          name: sleep for waiting launch db
-          command: sleep 1
-      - run:
-          name: "before_test: setup db"
-          command: docker-compose run web rails db:create db:migrate
+          name: Setup database
+          command: |
+            docker-compose run web rails db:create db:migrate
       - run:
           name: Run rspec
           command: docker-compose run web rspec
@@ -69,7 +70,10 @@ jobs:
       - run:
           name: Run post-deploy tasks
           command: |
-            heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            heroku config:set AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            heroku config:set AWS_REGION=$AWS_REGION
+            heroku config:set AWS_BUCKET=$AWS_BUCKET
             heroku run bin/rails db:migrate
             heroku run bin/rails runner db/seeds.rb
 
