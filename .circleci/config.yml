@@ -21,7 +21,7 @@ jobs:
           command: docker-compose run web rails db:create db:migrate
       - run:
           name: Run rspec
-          command: docker-compose exec web rspec
+          command: docker-compose run web rspec
 
   rubocop:
     working_directory: ~/myapp
