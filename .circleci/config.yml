@@ -12,15 +12,14 @@ jobs:
           command: |
             echo "export COMPOSE_FILE=docker-compose.ci.yml" >> $BASH_ENV
       - run:
-          name: Start containers and verify it is working
+          name: Start containers
           command: |
             set -x
             docker-compose up -d
-            docker exec myapp_web_1 curl -4 --retry 10 --retry-delay 3 --retry-connrefused http://localhost:3000
       - run:
           name: Setup database
           command: |
-            docker-compose exec web bash -c 'yes n
+            docker-compose exec web rails db:create db:migrate
       - run:
           name: Run rspec
           command: docker-compose exec web rspec
