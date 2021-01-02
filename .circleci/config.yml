@@ -16,7 +16,7 @@ jobs:
           command: |
             set -x
             docker-compose up -d
-            docker exec myrailsapp_web_1 curl -4 --retry 10 --retry-delay 3 --retry-connrefused http://localhost:3000
+            docker exec myapp_web_1 curl -4 --retry 10 --retry-delay 3 --retry-connrefused http://localhost:3000
       - run:
           name: Setup database
           command: |
@@ -60,21 +60,11 @@ jobs:
           name: Identify who I am
           command: echo 'export MY_EMAIL=`heroku auth:whoami | tail -n 1`' >> $BASH_ENV
       - run:
-          name: Identify Heroku app names to destroy
-          command: echo 'export APP_NAMES_TO_REMOVE=`heroku apps --json | jq -r "map(select(.owner.email == "\"$MY_EMAIL\"" and (.name | contains(\"potepanec\")))) | sort_by(.updated_at) | reverse | .[5:] | .[].name"`' >> $BASH_ENV
-      - run:
-          name: Delete old apps if needed
-          command: for app_name in $APP_NAMES_TO_REMOVE; do heroku apps:destroy -a $app_name -c $app_name; done
-      - run:
           name: Define Heroku app name to create
-          command: timestamp=`date +%Y%m%d%H%M%S` && echo "export HEROKU_APP_NAME=potepanec-$timestamp" >> $BASH_ENV
+          command: timestamp=`date +%Y%m%d%H%M%S` && echo "export HEROKU_APP_NAME=railstutrial-$timestamp" >> $BASH_ENV
       - run:
           name: Create fresh Heroku app
           command: heroku apps:create $HEROKU_APP_NAME --addons=jawsdb:kitefin
-      - run:
-          name: Run post-deploy tasks
-          command: |
-            heroku config:set RAILS_MASTER_KEY=$RAILS_MASTER_KEY
       - run:
           name: Deploy
           command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
@@ -82,9 +72,6 @@ jobs:
           name: Run post-deploy tasks
           command: |
             heroku config:set AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-            heroku config:set AWS_S3_HOST_NAME=$AWS_S3_HOST_NAME
-            heroku config:set AWS_S3_REGION=$AWS_S3_REGION
-            heroku config:set AWS_BUCKET=$AWS_BUCKET
             heroku run bin/rails db:migrate
             heroku run bin/rails runner db/seeds.rb
 
